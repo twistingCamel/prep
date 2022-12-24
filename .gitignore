@@ -1,0 +1,11 @@
+/.antlr
+/.cache
+/.vscode
+/.cache
+/.idea
+/unused
+/cmake-build-*
+/build
+/bck*
+
+compile_commands.json
