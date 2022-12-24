@@ -126,8 +126,6 @@ any PrepVisitor::visitFuncDef(prepParser::FuncDefContext *context) {
                      &retAny)) {
       if (recurseParams)
         throw runtime_error("@recurse cannot be called more than once");
-      // if (!(*ret)->Identifier().size())
-      //   throw runtime_error("@recurse cannot be called with no arguments");
       if (!paramsEllipses)
         throw runtime_error(
             "@recurse cannot be called in a function without ellipses");
@@ -195,7 +193,6 @@ void PrepVisitor::defFuncGen(
             name, fmt::join(parameterArguments, ", "),
             keywordArguments[ftypes::HEADER], keywordArguments[ftypes::FOOTER],
             separatorArgsEllips);
-      // params->Identifier();
       print(ss,
             "#define " fe_b "({1}{5}...) {2} __VA_OPT__({4}" fe_c " " par
             " ({3}))\n",

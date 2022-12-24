@@ -19,7 +19,6 @@ blockItemNoRecurse: funcKeywordNoRecurse | bodyStringImplicit;
 blockNoRecurse: blockItemNoRecurse*;
 
 Define: ('@def' | '@d' | '@define');
-/* For: ('@for' | '@f'); */
 Recurse: ('@recurse' | '@r');
 Separator: ('@sep' | '@separator' | '@s');
 Header: ('@header' | '@h');
@@ -36,8 +35,6 @@ parameterSingle: '(' (~')')* ')';
 String: '"' (~'"' | '\\"')* '"';
 string: String;
 bodyStringImplicit: string;
-
-// for: For '(' Identifier ',' ~')'* ')';
 
 recurse: Recurse parameterPackWithEllipses '@';
 separator: Separator string '@';

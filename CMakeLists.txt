@@ -19,9 +19,6 @@ target_precompile_headers(prep PUBLIC PrepVisitor.hpp PrepGenerator.hpp
 target_link_libraries(prep fmt Boost::filesystem)
 
 add_subdirectory(ant)
-# add_subdirectory(subprocess)
-
-# include_directories("subprocess")
 
 set(CPACK_PROJECT_NAME ${PROJECT_NAME})
 set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})

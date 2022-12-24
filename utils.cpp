@@ -9,7 +9,6 @@ string toHeaderGuard(string_view view) {
     else
       result[i] = toupper(view[i]);
   }
-  // result += "_PREPGEN_HPP";
   return result;
 }
 } // namespace utils
