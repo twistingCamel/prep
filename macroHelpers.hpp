@@ -7,7 +7,7 @@
 #define agm bgm(ARGUMENTS)
 #define agmz bgm(ARGUMENTS0)
 #define agmn bgm(ARGUMENTS{})
-#define expd(a) bgms("EXPAND" #a)
+#define expd(a) bgms("EXPAND_" #a)
 #define par bgm(PARENTHESES)
 // Note: stands for recursive function
 // #define rfe(c) REC_FUNC_{0} ## c

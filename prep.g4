@@ -49,4 +49,11 @@ StringFuncKeyword: Separator | Header | Footer | Body;
 funcDef: Define Identifier parameterPackWithEllipses block '@';
 declDef: Define Identifier blockNoRecurse '@';
 
-prog: (funcDef | declDef)+ EOF;
+prog: (funcDef | declDef)* EOF;
+
+//TODO: Bug: recursive only calls until ellipsis is empty; in for-each situations, the last one is
+// not iterated through; make user have a choice of whether to continue on last or just VA_OPT Note:
+
+// Note: (Maybe): whether recurse is called with ... or __VA_ARGS__
+
+// Note: (Maybe): make a new @base keyword, for the base case

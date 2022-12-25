@@ -23,6 +23,8 @@ private:
   enum FuncKeywordTypes { SEPARATOR, HEADER, FOOTER, BODY, NONE, RECURSE };
   using ftypes = FuncKeywordTypes;
   ostream &ss;
+  friend class PrepGenerator;
+  std::set<string> additionalExpands;
 
 public:
   PrepVisitor(const PrepVisitor &) = default;

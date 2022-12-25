@@ -37,4 +37,8 @@ string PrepGenerator::finalizeString(utils::flags &flags) {
 void PrepGenerator::addTree(ParseTree *tree) {
   PrepVisitor visitor{ss};
   visitor.visit(tree);
+  print(ss, "\n");
+  for (const string &i : visitor.additionalExpands) {
+    print(ss, "#define " expd({}) "(" agm ") " expd() "(" agm ")\n", i);
+  }
 }

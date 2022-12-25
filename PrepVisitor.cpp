@@ -172,11 +172,11 @@ void PrepVisitor::defFuncGen(
       parameterIdentifiers.begin(), parameterIdentifiers.end(),
       std::back_inserter(parameterArguments),
       [](antlr4::tree::TerminalNode *node) { return node->getText(); });
+  const char *separatorArgsEllips{parameterArguments.size() ? ", " : ""};
   if (recurse) {
     if (params->Ellipses()) {
       std::vector<antlr4::tree::TerminalNode *> recurseIdentifiers =
           std::move(recurse->Identifier());
-      const char *separatorArgsEllips{parameterArguments.size() ? ", " : ""};
       std::vector<string> recurseArguments{};
       recurseArguments.reserve(recurseIdentifiers.size() +
                                static_cast<bool>(recurse->Ellipses()));
@@ -186,15 +186,16 @@ void PrepVisitor::defFuncGen(
           [](antlr4::tree::TerminalNode *node) { return node->getText(); });
       if (recurse->Ellipses())
         recurseArguments.push_back("__VA_ARGS__");
+      // pritn(ss, "#define " expd())
+      additionalExpands.insert(name);
       print(ss,
             "#define " fe_a
-            "({1}{4}...) {2} __VA_OPT__(" expd() "(" fe_b
-                                                 "({1}{4}__VA_ARGS__))) {3}\n",
+            "({1}{4}...) {2} " expd({0}) "(" fe_b "({1}{4}__VA_ARGS__)) {3}\n",
             name, fmt::join(parameterArguments, ", "),
             keywordArguments[ftypes::HEADER], keywordArguments[ftypes::FOOTER],
             separatorArgsEllips);
       print(ss,
-            "#define " fe_b "({1}{5}...) {2} __VA_OPT__({4}" fe_c " " par
+            "#define " fe_b "({1}{5}...) {2} __VA_OPT__({4} " fe_c " " par
             " ({3}))\n",
             name, fmt::join(parameterArguments, ", "),
             keywordArguments[ftypes::BODY], fmt::join(recurseArguments, ", "),
@@ -208,11 +209,17 @@ void PrepVisitor::defFuncGen(
       throw runtime_error("Cannot recursively call function with no ellipses");
     }
   } else {
-    print(ss, "#define " fe "({1}) {2} {3} {4}\n", name,
+    print(ss, "#define " fe "({1}{5}) {2} {3} {4}\n", name,
           fmt::join(parameterArguments, ", "), keywordArguments[ftypes::HEADER],
-          keywordArguments[ftypes::BODY], keywordArguments[ftypes::FOOTER]);
-    print(ss, "#define {0}({1}) " fe "({1})\n", name,
-          fmt::join(parameterArguments, ", "));
+          keywordArguments[ftypes::BODY], keywordArguments[ftypes::FOOTER],
+          params->Ellipses() ? parameterArguments.size() ? ", ..." : "..."
+                             : "");
+    print(ss, "#define {0}({1}{2}) " fe "({1}{3})\n", name,
+          fmt::join(parameterArguments, ", "),
+          params->Ellipses() ? parameterArguments.size() ? ", ..." : "..." : "",
+          params->Ellipses()
+              ? parameterArguments.size() ? ", __VA_ARGS__" : "__VA_ARGS__"
+              : "");
   }
 }
 void PrepVisitor::defDeclGen(string name,
